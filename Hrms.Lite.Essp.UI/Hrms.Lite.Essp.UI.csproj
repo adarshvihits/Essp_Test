@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\ESSP\Views\MyProfile\" />
+    <Folder Include="Areas\ESSP\Views\AttendanceRegularization\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.19" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hrms.Lite.Essp.Infrastructure\Hrms.Lite.Essp.Infrastructure.csproj" />
+    <ProjectReference Include="..\Hrms.Lite.Essp.Services\Hrms.Lite.Essp.Services.csproj" />
+  </ItemGroup>
+
+</Project>

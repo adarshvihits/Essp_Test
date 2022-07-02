@@ -1,0 +1,125 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.MyProfile.MyProfile
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "ContactDetails" }))
+{
+    <div class="row">
+        @{
+            Model.TabIndex = "Contactdetails";
+        }
+        @Html.HiddenFor(m => m.TabIndex)
+        @*@Html.HiddenFor(m => m.EmployeeGI)*@
+
+        <div class="col-md-6">
+
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Personal Mobile</label>
+                        @*<input type="text"
+                            class="form-control form-control-sm"
+                            placeholder="Mob">*@
+                        @Html.TextBoxFor(m => m.ContactDetails.PersonalMobile, new { @class = "form-control form-control-sm", @placeholder = "Personal Mobile", @maxlength = 10, @onblur = "validateMobile(this,'pmobile')", @onkeypress = "return onlyNumberKey(event)" })
+                        <span id="pmobile"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Personal Email</label>
+                        @*<input type="email"
+                            class="form-control form-control-sm"
+                            placeholder="Email">*@
+                        @Html.TextBoxFor(m => m.ContactDetails.PersonalEmail, new { @class = "form-control form-control-sm", @placeholder = "Personal Email", @maxlength = 120, @onblur = "validateEmail(this,'pemail')" })
+                        <span id="pemail"></span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Office Number</label>
+                        @*<input type="text"
+                            class="form-control form-control-sm"
+                            placeholder="Mob">*@
+                        @Html.TextBoxFor(m => m.ContactDetails.OfficeMobile, new { @class = "form-control form-control-sm", @placeholder = "Office Number", @maxlength = 10, @onblur = "validateMobile(this,'omobile')", @onkeypress = "return onlyNumberKey(event)" })
+                        <span id="omobile"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Office Email</label>
+                        @*<input type="email"
+                            class="form-control form-control-sm"
+                            placeholder="Email">*@
+                        @Html.TextBoxFor(m => m.ContactDetails.OfficeEmail, new { @class = "form-control form-control-sm", @placeholder = "Office Email", @maxlength = 120, @onblur = "validateEmail(this,'oemail')" })
+                        <span id="oemail"></span>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="row">
+
+                <div class="col-md-3">
+
+                    <div class="form-group">
+                        <label>Emergency Contact Person</label>
+                        @*<input type="text"
+                            class="form-control form-control-sm"
+                            placeholder="Contact Person">*@
+                        @Html.TextBoxFor(m => m.ContactDetails.EmergencyContactPerson, new { @class = "form-control form-control-sm", @maxlength = 120, @placeholder = "Emergency Contact Person", @onblur = "firstLetterCaps(this,'econtactperson')", @onkeypress = "return onlyLettersKey(event)" })
+                        <span id="econtactperson"></span>
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Emergency Contact Number</label>
+                        @*<input type="text"
+                            class="form-control form-control-sm"
+                            placeholder="Mobile Number">*@
+                        @Html.TextBoxFor(m => m.ContactDetails.EmergencyContactNumber, new { @class = "form-control form-control-sm", @maxlength = 10, @placeholder = "Emergency Contact Number", @onblur = "validateMobile(this,'econtactnumber')", @onkeypress = "return onlyNumberKey(event)" })
+                        <span id="econtactnumber"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Relation</label>
+                        @Html.DropDownListFor(m => m.ContactDetails.Relation.Code, (SelectList)ViewBag.Con, "--Select Relation--", new { @class = "form-control form-control-sm", @onchange = "validate(this,'relation')" })
+                        <span id="relation"></span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" onclick="validateAllContactDetails()"
+                    class="btn btn-default float-right">
+                Save
+            </button>
+        </div>
+    </div>
+}

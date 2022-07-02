@@ -1,0 +1,137 @@
+﻿@model Hrms.Lite.Essp.Shared.Essp.Leave.LeaveBalance
+<script src="~/scripts/ESSP/leaveapplication.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/js/DataTables-1.11.3/js/jquery.dataTables.min.js" defer></script>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--begin::Header-->
+<div id="kt_header" class="header header-fixed">
+    <!--begin::Container-->
+    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+        <!--begin::Header Menu Wrapper-->
+
+
+        <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+            <!--begin::Header Menu-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <h3 class="main-title">My Leave Balance</h3>
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item ">
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })" class="">
+                            <i class="icon-nm fas fa-home mt-1"></i>
+                        </a>     </li>
+                    <li class="breadcrumb-item text-muted">
+                        <a href="@Url.Action("Index", "LeaveApplication", new { Area = "ESSP" })"> Leave Application </a>
+                    </li>
+                    <li class="breadcrumb-item text-muted">
+                        My Leave Balance
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="topbar">
+
+            <!--begin::User-->
+            @*<div class="topbar-item">
+                <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"
+                     id="kt_quick_user_toggle">
+                    <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
+                    <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">Sean</span>
+
+                </div>
+            </div>*@
+            <!--end::User-->
+        </div>
+        <!--end::Topbar-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Header-->
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container full-width">
+            <!--begin::Dashboard-->
+            <!--begin::Row-->
+
+
+
+            <div class="card card-custom height-100per footer-row-fixed">
+
+                <div class="card-body">
+                    <div class="row tab-style-button">
+
+
+
+                        <div class="title">
+                            <strong>   Leave Balance </strong>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+
+                                @Html.DropDownListFor(m => m.LeavePeriod.Code, (SelectList)ViewBag.LeavePeriod, new { @class = "form-control form-control-sm" , @id = "ddlLeavePeriod",@onchange="LeaveBalanceList()"})
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ihits-table table-border odd-even mobile-responsive-table leave-balance">
+                        <table>
+                            <thead>
+                                <tr class="table-dark">
+                                    <th scope="col">Leave Type</th>
+                                    <th scope="col">Short Name</th>
+                                    <th scope="col">Opening</th>
+                                    <th scope="col">Carry Forward</th>
+                                    <th scope="col">Increment</th>
+                                    <th scope="col">Decrement</th>
+                                    <th scope="col">Taken</th>
+                                    <th scope="col">Balance</th>
+                                    <th scope="col">Applied</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.LeaveBalanceList != null && Model.LeaveBalanceList.Count > 0)
+                                {
+
+                                    for (int i = 0; i < Model.LeaveBalanceList.Count; i++)
+                                    {
+
+                                        <tr>
+                                            <td data-label="Loan Type">@Model.LeaveBalanceList[i].LeaveType</td>
+                                            <td data-label="Disbursement Date">@Model.LeaveBalanceList[i].ShortName</td>
+                                            <td data-label="Principel Amount">@Model.LeaveBalanceList[i].Openings</td>
+                                            <td data-label="Loan Status">@Model.LeaveBalanceList[i].CarryForward</td>
+                                            <td data-label="Outstanding Amount">@Model.LeaveBalanceList[i].Increment</td>
+                                            <td data-label="Disbursement Date">@Model.LeaveBalanceList[i].Decrement</td>
+                                            <td data-label="Principel Amount">@Model.LeaveBalanceList[i].Taken</td>
+                                            <td data-label="Loan Status">@Model.LeaveBalanceList[i].Balance</td>
+                                            <td data-label="Outstanding Amount">@Model.LeaveBalanceList[i].Applied</td>
+                                        </tr>
+                                    }
+                                }
+                                    </tbody>
+                        </table>
+                    </div>
+                    <!-- Table Setion End -->
+                    <!--end: Datatable-->
+                </div>
+            </div>
+
+
+            <!--end::Row-->
+            <!--begin::Row-->
+            <!--end::Row-->
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+
+</div>

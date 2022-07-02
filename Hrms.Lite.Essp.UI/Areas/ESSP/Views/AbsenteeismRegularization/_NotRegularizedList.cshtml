@@ -1,0 +1,67 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.Regularization.AbsenteeismRegularization
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#fromVal span').text('@Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.From))');
+        $('#toVal span').text(' @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.To))');
+        $('.AllTabCount').text(' @Model.DaysCount');
+        $('.PendingCount').text(' @Model.PendingCount');
+    });
+</script>
+<div class="ihits-table table-border hover-color odd-even mobile-responsive-table absenteeism-table vertical-scroll-300">
+    <table>
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">Date</th>
+                <th scope="col">Assigned Shift</th>
+                <th scope="col">Worked Shift </th>
+                <th scope="col">IN </th>
+                <th scope="col">Out</th>
+                <th scope="col">Total Time</th>
+                <th scope="col">Status</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Regularize</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.AbsenteeismRegularizationList != null && Model.AbsenteeismRegularizationList.Count > 0)
+            {
+
+                for (int i = 0; i < Model.AbsenteeismRegularizationList.Count; i++)
+                {
+                    <tr>
+                        <td data-label="Date">@Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AbsenteeismRegularizationList[i].Date))</td>
+                        <td data-label="Assigned Shift">
+                            @Model.AbsenteeismRegularizationList[i].AssignedShift
+                        </td>
+                        <td data-label="Worked Shift">@Model.AbsenteeismRegularizationList[i].WorkedShift</td>
+                        <td data-label="In">@Model.AbsenteeismRegularizationList[i].IN</td>
+                        <td data-label="Out">@Model.AbsenteeismRegularizationList[i].Out</td>
+                        <td data-label="Total Time">@Model.AbsenteeismRegularizationList[i].TotalTime</td>
+                        <td data-label="Status">@Model.AbsenteeismRegularizationList[i].Status</td>
+
+                        <td data-label="Reason">@Model.AbsenteeismRegularizationList[i].Reason</td>
+                        <td data-label="Regularize">
+
+                            <div class="form-group filter-combobox mr-2">
+                                @Html.DropDownListFor(m => Model.AbsenteeismRegularizationList[i].Regularize, (SelectList)ViewBag.Abs, "--select--", new { @class = "form-control form-control-sm", @onchange = "onFormNameChange(this.value,'" + Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AbsenteeismRegularizationList[i].Date)) + "','" + Model.AbsenteeismRegularizationList[i].DayStatusCode + "')" })
+                                <span id="dailyMonth"></span>
+                            </div>
+
+
+
+
+                        </td>
+                    </tr>
+
+
+                }
+            }
+        </tbody>
+    </table>
+
+
+
+
+
+</div>

@@ -1,0 +1,47 @@
+﻿@model   Hrms.Lite.Essp.Shared.DataBank.Generic.Master.ShiftDetails
+<div class="ihits-table table-border hover-color odd-even mobile-responsive-table shift_details vertical-scroll-150">
+    <table>
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">Shift Name</th>
+                <th scope="col">Shift Code</th>
+                <th scope="col">Shift Category</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">End Time</th>
+                <th scope="col">Scheduled Hours </th>
+                <th scope="col"> Full day Hours</th>
+                <th scope="col">Half day hours</th>
+                <th scope="col">Break start time</th>
+                <th scope="col">  Break End Time</th>
+                <th scope="col">Break Hours</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ShiftList != null && Model.ShiftList.Count > 0)
+            {
+                @foreach (var item in Model.ShiftList)
+                {
+                    <tr>
+                        <td data-label="Shift Name">@item.Name</td>
+                        <td data-label="Shift Code">
+                            @item.ShiftCode
+                        </td>
+                        <td data-label="Shift Category">@item.ShiftType.Name </td>
+                        <td data-label="Start Time">@item.ShiftStartTime</td>
+                        <td data-label="End Time">@item.ShiftEndTime</td>
+                        <td data-label="Scheduled Hours">@item.ScheduledHour</td>
+                        <td data-label="Full day Hours">@item.FullDayHour</td>
+                        <td data-label="Half start Hours">@item.HalfDayHour</td>
+                        <td data-label="Break start time">@item.BreakHourStartTime</td>
+                        <td data-label="Break End Time">@item.BreakHourEndTime</td>
+                        <td data-label="Break Hours">@item.BreakHour</td>
+                    </tr>
+
+                }
+            }
+
+
+        </tbody>
+    </table>
+</div>

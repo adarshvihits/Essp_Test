@@ -1,0 +1,215 @@
+﻿@model Hrms.Lite.Essp.Shared.Essp.Leave.LeaveApplication
+
+<script src="~/scripts/ESSP/leaveapplication.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/js/DataTables-1.11.3/js/jquery.dataTables.min.js" defer></script>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        debugger;
+       $('.AllCount').html("@Model.TotalCount");
+        $('.RejectedCount').html("@Model.RejectedCount");
+        $('.ApprovedCount').html("@Model.ApproveCount");
+        $('.PendingCount').html("@Model.PendingCount");
+
+
+        $(".dataTables_filter").addClass("dataTables_filter_trn");
+        $('.ihits-table table').removeClass("dataTable no-footer");
+        $(".ihits-table table tr th").removeAttr('style')
+
+    });
+</script>
+
+    <!--begin::Header-->
+    <div id="kt_header" class="header header-fixed">
+        <!--begin::Container-->
+        <div class="container-fluid d-flex align-items-stretch justify-content-between">
+            <!--begin::Header Menu Wrapper-->
+
+
+            <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+                <!--begin::Header Menu-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <h3 class="main-title">Application History</h3>
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item ">
+                            <a href="@Url.Action("Index", "Home", new { Area = "" })" class="">
+                                <i class="icon-nm fas fa-home mt-1"></i>
+                            </a> </li>
+                        <li class="breadcrumb-item text-muted">
+                            <a href="@Url.Action("Index", "LeaveApplication", new { Area = "ESSP" })"> Leave Application </a>
+                        </li>
+                        <li class="breadcrumb-item text-muted">
+                            Application History
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="topbar">
+
+                <!--begin::User-->
+                @*<div class="topbar-item">
+                    <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"
+                         id="kt_quick_user_toggle">
+                        <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
+                        <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">Sean</span>
+
+                    </div>
+                </div>*@
+                <!--end::User-->
+            </div>
+            <!--end::Topbar-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Header-->
+    <!--begin::Content-->
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <!--begin::Entry-->
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container full-width">
+                <!--begin::Dashboard-->
+                <!--begin::Row-->
+
+
+
+                <div class="card card-custom height-100per footer-row-fixed">
+
+                    <div class="card-body">
+
+
+
+
+                        <div class="mobile-tab-section">
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Type</label>
+                                        <select class="form-control form-control-sm "
+                                                id="tabsDropdownLeaveApplication"
+                                                onchange="OnTabclick(this)">
+                                            <option value="PENDING">PENDING</option>
+                                            <option value="APPROVED">APPROVED</option>
+                                            <option value="REJECTED">REJECTED</option>                                        
+                                            <option value="ALL">ALL</option>
+                                            
+                                        </select>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-6">
+                                    <div class="form-group filter-combobox pt-6" >
+                                       
+                                        @Html.DropDownListFor(m => m.LeavePeriod.Code, (SelectList)ViewBag.LeavePeriod, "Leave Period",new { @class = "form-control form-control-sm ", @id = "ddlLeavePeriod", @onchange ="validate(this,'LPeriod');$('.leaveCombo').val($('#LeavePeriod_Code').val());getList()" })
+                                    </div>
+                                </div>
+                                <div class="col-6">
+
+                                    <div class="form-group filter-combobox">
+                                        @Html.DropDownListFor(m => m.LeaveType.Code, (SelectList)ViewBag.LeaveType, "Leave Type", new { @class = "form-control form-control-sm ",@onchange = "validate(this,'LType');$('.typeCombo').val($('#LeaveType_Code').val());getList()" })
+                                 
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+
+
+
+                        <div class="row tab-style-button">
+                            <div class="tab-button-wrap">
+                                <div class="tab-items ">
+                                    <span class="btn-title PendingTab active" onclick="tabClick('PendingTab', 'PENDING', 'PENDING')">
+                                        Pending
+                                        <span class="btn-notification PendingCount">@Model.PendingCount</span>
+                                    </span>
+                                </div>
+                                <div class="tab-items high">
+                                    <span class="btn-title  ApprovedTab" onclick="tabClick('ApprovedTab', 'APPROVED', 'APPROVED')">
+                                        Approved
+                                        <span class="btn-notification ApprovedCount">@Model.ApproveCount</span>
+                                    </span>
+                                </div>
+                                <div class="tab-items high">
+                                    <span class="btn-title RejectedTab" onclick="tabClick('RejectedTab', 'REJECTED', 'REJECTED')">
+                                        Rejected
+                                        <span class="btn-notification RejectedCount">@Model.RejectedCount</span>
+                                    </span>
+                                </div>
+                                <div class="tab-items medium">
+                                    <span class="btn-title active AllTab" onclick="tabClick('AllTab', 'ALL', 'ALL')">
+                                        All
+                                        <span class="btn-notification AllCount">@Model.TotalCount</span>
+                                    </span>
+                                </div>
+
+                                <div class="tab-items select-option">
+
+
+                                    <div class="form-group filter-combobox" style="margin-right: 10px;">
+
+                                        @Html.HiddenFor(Model => Model.LeaveType.Code)
+                                        @*@Html.DropDownListFor(m => m.LeavePeriod.Code, (SelectList)ViewBag.LeavePeriod, new { @class = "form-control form-control-sm", @id = "ddlLeavePeriod", @onchange = "getList()", @style = "width: 200px;" })*@
+                                        @Html.DropDownListFor(m => m.LeavePeriod.Code, (SelectList)ViewBag.LeavePeriod, "Leave Period", new { @class = "form-control form-control-sm leaveCombo", @id = "ddlLeavePeriod", @onchange = "validate(this,'Lperiod');$('#LeavePeriod_Code').val($('.leaveCombo').val());getList()" })
+                                        <span id="LPeriod"></span>
+                                    </div>
+                                    <div class="form-group filter-combobox" style="width: 220px; margin-right: 10px;">
+                                        @*@Html.DropDownListFor(m => m.LeaveType.Code, (SelectList)ViewBag.LeaveWithAll, new { @class = "form-control form-control-sm ", @id = "ddlLeaveType", @onchange = "getList()", @style = "width: 200px;" })*@
+                                        @Html.DropDownListFor(m => m.LeaveType.Code, (SelectList)ViewBag.LeaveType, "Leave Type", new { @class = "form-control form-control-sm typecombo",  @id = "ddlLeaveType",@onchange = "validate(this,'Ltype');$('#LeaveType_Code').val($('.typecombo').val());getList()" })
+                                        <span id="LType"></span>
+                                    </div>
+
+
+
+                                    <button data-toggle="tooltip" title="" class="btn btn-excel float-left" data-original-title="Export to Excel" onclick="ExportToExcel()">
+                                        <i class="icon-xl far fa-file-excel"></i>
+                                    </button>
+
+                                    <div class="sraech-slider" onclick="CursorFocusOnSearch()">
+                                        <div class="search-slider-inner">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div id="alllist">
+                            @await Html.PartialAsync("_ApplicationHistoryList")
+
+                        </div>
+                        <!--end: Datatable-->
+                    </div>
+                </div>
+
+
+                <!--end::Row-->
+                <!--begin::Row-->
+                <!--end::Row-->
+                <!--end::Dashboard-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+
+    </div>
+    <!--end::Content-->
+    <!--end::Content-->

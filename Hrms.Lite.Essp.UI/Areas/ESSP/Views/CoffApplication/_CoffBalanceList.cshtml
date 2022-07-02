@@ -1,0 +1,63 @@
+﻿
+@model Hrms.Lite.Essp.Shared.Essp.Leave.CoffBalance
+<div class="dash-board-top-buttons c-off-dashboard">
+    <div class="image-button time-backcolor">
+
+        <h3>@Model.Balance</h3>
+        <h2 class="mt-0">Total Balance</h2>
+    </div>
+    <div class="image-button-two time-backcolor">
+
+        <h3>@Model.Expired</h3>
+        <h2 class="mt-0">Expired</h2>
+    </div>
+    <div class="image-button-three time-backcolor">
+
+        <h3>@Model.Availed</h3>
+        <h2 class="mt-0">Availed</h2>
+    </div>
+
+</div>
+
+
+
+
+<div class="ihits-table table-border hover-color odd-even mobile-responsive-table c-off-balance">
+    <table>
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">Entitle Date</th>
+                <th scope="col">Expires On</th>
+                <th scope="col">Credited For</th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.CoffBalanceList != null && Model.CoffBalanceList.Count > 0)
+            {
+
+                for (int i = 0; i < Model.CoffBalanceList.Count; i++)
+                {
+                    <tr>
+                        <td data-label="Entitle Date">@Model.CoffBalanceList[i].EntitleDate.ToString("dd-MMM-yyyy")</td>
+                        <td data-label="Expires On">@Model.CoffBalanceList[i].ExpiresOn.ToString("dd-MMM-yyyy")  </td>
+                        <td data-label="Credited For">@Model.CoffBalanceList[i].CreditedFor</td>
+
+
+                    </tr>
+                }
+            }
+
+            else
+            {
+                <tr>
+                    <td colspan="3">No data</td>
+                </tr>
+
+            }
+            
+        </tbody>
+    </table>
+</div>

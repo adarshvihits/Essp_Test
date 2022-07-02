@@ -1,0 +1,102 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.MyProfile.MyProfile
+@{
+Model.TabIndex = "Previous Employment";
+}
+@*<script src="~/scripts/DataBank/PersonalDetails/personalDetails.js"></script>*@
+<script src="~/js/bootstrap-datepicker.js"></script>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "prev" }))
+{
+    @Html.HiddenFor(m => m.TabIndex)
+    @*@Html.HiddenFor(m => m.EmployeeGI)*@
+    <div id="addPreviousEmployment" class="slider-forms slider-forms-open pre">
+        <div class="slider-inner-style">
+            <div class="slider-form-close" onclick="CloseSlider('pre')"><i class="ki ki-close icon-xs text-muted"></i></div>
+            <h3>Previous Employment</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        @Html.HiddenFor(m => m.GetPreviousEmployment.PrevEmploymentLogGI, new { @class = "form-control form-control-sm", @placeholder = "prevGI" })
+                        @Html.HiddenFor(m => m.SliderName)
+                        @Html.TextBoxFor(m => m.GetPreviousEmployment.CompanyName, new { @class = "form-control", placeholder = "Company Name", @maxlength = 120, @onblur = "firstLetterCaps(this,'prvscompany')", @onkeypress = "return onlyLettersKey(event)" })
+                        <span id="prvscompany" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Location</label>
+                        @* <input type="text" class="form-control form-control-sm" placeholder="Location">*@
+                        @Html.TextBoxFor(m => m.GetPreviousEmployment.Location, new { @class = "form-control", placeholder = "Location", @maxlength = 120, @onblur = "firstLetterCaps(this,'prvslocation')" })
+                        <span id="prvslocation"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label>Designation</label>
+                        @*<input type="text" class="form-control form-control-sm" placeholder="Designation">*@
+                        @Html.TextBoxFor(m => m.GetPreviousEmployment.Designation, new { @class = "form-control", placeholder = "Designation", @maxlength = 120, @onblur = "firstLetterCaps(this,'prvsdesignation')" })
+                        <span id="prvsdesignation"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>From</label>
+                        <div class="input-group date">
+                            @*<input type="text" class="form-control kt_datepicker_2" id="kt_datepicker_2" readonly="readonly"
+                                placeholder="From">*@
+                            @Html.TextBoxFor(m => m.GetPreviousEmployment.Fromdate, "{0:dd-MMM-yyyy}", new { @class = "form-control kt_datepicker_8", placeholder = "From" })
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="la la-calendar"></i>
+                                </span>
+                                <span id="fromdate"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>To</label>
+                        <div class="input-group date">
+                            @Html.TextBoxFor(m => m.GetPreviousEmployment.Todate, "{0:dd-MMM-yyyy}", new { @class = "form-control kt_datepicker_8", placeholder = "To", @onchange = "calcExp(this,'todate')" })
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="la la-calendar"></i>
+                                </span>
+                                <span id="todate"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Experience</label>
+                        @*<input type="text" class="form-control form-control-sm" placeholder="Experience">*@
+                        @Html.TextBoxFor(m => m.GetPreviousEmployment.Experience, new { @class = "form-control", placeholder = "Experience", @disabled = true })
+                    </div>
+                </div>
+            </div>
+            <div class="row card-footer-bottom-fixed border-none">
+
+                <div class="col-md-12 float-right-btn">
+                    <button type="button" class="btn btn-default" onclick="validateAllPreviousEmployment()">@Model.SliderName</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

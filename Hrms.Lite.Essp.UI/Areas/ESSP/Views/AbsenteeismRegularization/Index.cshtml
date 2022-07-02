@@ -1,0 +1,254 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.Regularization.AbsenteeismRegularization
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="~/scripts/ESSP/absenteeismRegularization.js"></script>
+<script>
+
+
+    function POPUP() {
+
+        debugger;
+        $.ajax({
+            type: 'GET',
+            url: '/ESSP/AbsenteeismRegularization/GetShiftDetails',
+            dataType: 'html',
+
+            success: function (Data) {
+                var m = $('.bd-example-modal-lg');
+                m.find('.modal-body').html('');
+                m.find('.modal-body').html(Data);
+                m.modal('show');
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                swal.fire(xhr.responseText);
+
+            }
+        });
+    }
+
+
+</script>
+
+<!--begin::Header-->
+<div id="kt_header" class="header header-fixed">
+    <!--begin::Container-->
+    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+        <!--begin::Header Menu Wrapper-->
+        <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+            <!--begin::Header Menu-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <h3 class="main-title">Absenteeism Regularization </h3>
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item ">
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })" class="">
+                            <i class="icon-nm fas fa-home mt-1"></i>
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item text-muted">
+                        Absenteeism Regularization
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--end::Header Menu Wrapper-->
+
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Header-->
+<!--begin::Content-->
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container full-width">
+            <!--begin::Dashboard-->
+            <!--begin::Row-->
+
+            <div class="row height-100per">
+
+                <div class="col-md-12">
+                    <div class="card card-custom height-100per">
+                        <div class="card-body p-5 pb-13">
+
+                            <div class="mobile-tab-section">
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Type</label>
+                                            <select class="form-control form-control-sm "
+                                                    id="tabsDropdownDivision"
+                                                    onchange="tabClick(this)">
+                                                <option value="active">Not Regularized Days</option>
+                                                <option value="PendingTab">Approval pending</option>
+
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label>Select Type</label>
+                                            @Html.DropDownListFor(m => Model.Month.Code, (SelectList)ViewBag.Month, new { @class = "form-control form-control-sm", @onchange = "OnMonthChange(this)" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 d-flex align-items-center ">
+
+                                        <div class="button-group float-right ">
+
+                                            <div class="row-outer mr-2">
+                                                <label class="view-title">From</label>
+                                                <div class="view-details" id="fromVal">
+                                                    <span>
+                                                        @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.From))
+                                                    </span>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-6 d-flex align-items-center ">
+                                        <div class="row-outer mr-2">
+                                            <label class="view-title">To</label>
+                                            <div class="view-details" id="toVal">
+                                                <span>
+                                                    @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.To))
+
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row tab-style-button">
+                                <div class="tab-button-wrap">
+                                    <div class="tab-items" id="notRegCount">
+                                        <span class="btn-title active ActiveTab" onclick="OnTabClick('ActiveTab','NotRegularizedDays')">
+                                            Not Regularized Days
+                                            <span class="btn-notification AllTabCount">@Model.DaysCount</span>
+                                        </span>
+                                    </div>
+                                    <div class="tab-items medium" id="pendCount">
+                                        <span class="btn-title PendingTab" onclick="OnTabClick('PendingTab','PENDING')">
+                                            Approval pending
+                                            <span class="btn-notification PendingCount">@Model.PendingCount</span>
+                                        </span>
+                                    </div>
+
+
+                                    <div class="tab-items select-option ">
+                                        <div class="form-group filter-combobox mr-10">
+                                            @Html.DropDownListFor(m => Model.Month.Code, (SelectList)ViewBag.Month, new { @class = "form-control form-control-sm", @onchange = "OnMonthChange(this)" })
+                                            <span id="dailyMonth"></span>
+                                        </div>
+                                        <div class="float-left tab-items">
+
+                                            <div class="row-outer mr-2">
+                                                <label class="view-title">From</label>
+                                                <div class="view-details" id="fromVal">
+                                                    <span>
+                                                        @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.From))
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="float-left tab-items">
+
+                                            <div class="row-outer mr-2">
+                                                <label class="view-title">To</label>
+                                                <div class="view-details" id="toVal">
+                                                    <span>
+                                                        @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.To))
+
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <button data-toggle="tooltip" title="" class="btn btn-excel" data-original-title="Export to Excel">
+                                            <i class="icon-xl far fa-file-excel"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                            <div id="RegList">
+                                @await Html.PartialAsync("_NotRegularizedList", Model)
+                            </div>
+                            <div id="trackerId">
+
+                            </div>
+
+
+
+                            <div class="row card-footer-bottom-fixed">
+
+
+
+                                <div class="col-md-12">
+
+
+                                    <!-- Large modal -->
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="POPUP()"> Shift Details</button>
+
+                                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+                                        <div class="modal-dialog modal-lg
+                                             ">
+                                            <div class="modal-content popup">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Shift Details</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <i aria-hidden="true" class="ki ki-close"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!--end::Row-->
+            <!--begin::Row-->
+            <!--end::Row-->
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->

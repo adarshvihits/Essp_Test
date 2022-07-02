@@ -1,0 +1,199 @@
+﻿@model Hrms.Lite.Essp.Shared.Essp.Leave.CoffApplication
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="~/js/DataTables-1.11.3/js/jquery.dataTables.min.js" defer></script>
+<script src="~/scripts/ESSP/coffApplication.js"></script>
+<!--begin::Header-->
+<div id="kt_header" class="header header-fixed">
+    <!--begin::Container-->
+    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+        <!--begin::Header Menu Wrapper-->
+
+
+        <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+            <!--begin::Header Menu-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <h3 class="main-title">Application History</h3>
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item ">
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })" class="">
+                            <i class="icon-nm fas fa-home mt-1"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item text-muted">
+                        <a href="@Url.Action("Create","CoffApplication")"> Coff Application</a>
+                    </li>
+                    <li class="breadcrumb-item text-muted">
+                        Application History
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="topbar">
+
+            <!--begin::User-->
+            <div class="topbar-item">
+
+            </div>
+            <!--end::User-->
+        </div>
+        <!--end::Topbar-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Header-->
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container full-width">
+            <!--begin::Dashboard-->
+            <!--begin::Row-->
+
+
+
+            <div class="card card-custom height-100per footer-row-fixed">
+
+                <div class="card-body">
+
+
+
+
+                    <div class="mobile-tab-section">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    <select class="form-control form-control-sm "
+                                            id="tabsDropdownCoffApplication"
+                                            onchange="tabClick(this)">
+                                        <option value="PENDING">PENDING</option>
+                                        <option value="APPROVED">APPROVED</option>
+                                        <option value="REJECTED">REJECTED</option>
+                                        <option value="ALL">ALL</option>
+
+                                    </select>
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-6">
+                                <div class="form-group filter-combobox pt-6">
+
+                                    @Html.DropDownListFor(m => m.LeavePeriod.Code, (SelectList)ViewBag.LeavePeriod, "Leave Period", new { @class = "form-control form-control-sm ", @id = "ddlLeavePeriod", @onchange = "validate(this,'LPeriod');$('.leavePeriodCombo').val($('#LeavePeriod_Code').val());onCoffHistoryComboChange()" })
+                                </div>
+                            </div>
+                            <div class="col-6">
+
+                                <div class="form-group filter-combobox">
+                                    @Html.DropDownListFor(m => m.LeaveReason.Code, (SelectList)ViewBag.LeaveReasonsDropDownWithAll, "Leave Type", new { @class = "form-control form-control-sm ", @onchange = "validate(this,'LType');$('.leaveTypeCombo').val($('#LeaveReason_Code').val());onCoffHistoryComboChange()" })
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="row tab-style-button">
+                        <div class="tab-button-wrap">
+
+                            <div class="tab-items ">
+                                <span class="btn-title PendingTab active" onclick="onTabClick('Pending','PendingTab')">
+                                    Pending
+                                    <span class="btn-notification PendingCount">@Model.PendingCount</span>
+                                </span>
+                            </div>
+                            <div class="tab-items high">
+                                <span class="btn-title  ApprovedTab" onclick="onTabClick('Approved','ApprovedTab')">
+                                    Approved
+                                    <span class="btn-notification ApproveCount">@Model.ApproveCount</span>
+                                </span>
+                            </div>
+                            <div class="tab-items high">
+                                <span class="btn-title  RejectedTab" onclick="onTabClick('Rejected','RejectedTab')">
+                                    Rejected
+                                    <span class="btn-notification RejectedCount">@Model.RejectedCount</span>
+                                </span>
+                            </div>
+                            <div class="tab-items medium">
+                                <span class="btn-title AllTab " onclick="onTabClick('All','AllTab')">
+                                    All
+                                    <span class="btn-notification TotalCount">@Model.TotalCount</span>
+                                </span>
+                            </div>
+
+
+                            <div class="tab-items select-option">
+
+
+                                <div class="form-group filter-combobox" style="width: 120px; margin-right: 10px;">
+                                    @Html.DropDownListFor(m => m.LeavePeriod.Code, (SelectList)ViewBag.LeavePeriod, "Leave Period", new { @class = "form-control form-control-sm leavePeriodCombo", @onchange = "validate(this,'Lperiod');$('#LeavePeriod_Code').val($('.leavePeriodCombo').val());onCoffHistoryComboChange()" })
+                                    <span id="LPeriod"></span>
+
+                                </div>
+                                <div class="form-group filter-combobox" style="width: 220px; margin-right: 10px;">
+                                    @Html.DropDownListFor(m => m.LeaveReason.Code, (SelectList)ViewBag.LeaveReasonsDropDownWithAll, "Reason", new
+                               {
+                                   @class = "form-control form-control-sm leaveTypeCombo",
+                                   @onchange = "validate(this,'LType');$('#LeaveReason_Code').val($('.leaveTypeCombo').val());onCoffHistoryComboChange()"
+                               })
+                                    <span id="LType"></span>
+
+                                </div>
+
+                                <div class="sraech-slider" onclick="CursorFocusOnSearch()">
+                                    <div class="search-slider-inner">
+                                        <i class="fa fa-search"></i>
+                                    </div>
+
+                                </div>
+
+
+                                <button data-toggle="tooltip" title="" class="btn btn-excel float-left" data-original-title="Export to Excel" onclick="ExportToExcel()">
+                                    <i class="icon-xl far fa-file-excel"></i>
+                                </button>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="coff-ApplicationList">
+                        @await Html.PartialAsync("_CoffHistoryList", Model)
+                    </div>
+
+
+                    <div class="coff-Tracker">
+
+                    </div>
+
+
+                    <!--end: Datatable-->
+                </div>
+            </div>
+
+
+            <!--end::Row-->
+            <!--begin::Row-->
+            <!--end::Row-->
+            <!--end::Dashboard-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+
+</div>

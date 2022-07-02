@@ -1,0 +1,203 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.Regularization.AttendanceRegularization
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/DataTables-1.11.3/js/jquery.dataTables.min.js" defer></script>
+<script src="~/scripts/ESSP/attendanceRegularization.js"></script>
+<div id="kt_header" class="header header-fixed">
+    <!--begin::Container-->
+    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+        <!--begin::Header Menu Wrapper-->
+
+
+        <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+            <!--begin::Header Menu-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <h3 class="main-title">Attendance Regularization Approvals</h3>
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item ">
+                        <a href="dashboard.html"><i class="icon-nm fas fa-home"></i></a>
+                    </li>
+
+                    <li class="breadcrumb-item text-muted">
+                        Attendance Regularization Approvals
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+      
+        <!--end::Topbar-->
+    </div>
+    <!--end::Container-->
+</div>
+
+
+
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container full-width">
+            <!--begin::Dashboard-->
+            <!--begin::Row-->
+
+
+
+            <div class="card card-custom height-100per footer-row-fixed">
+
+                <div class="card-body">
+
+
+
+                    <div class="mobile-tab-section">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Type</label>
+                                    <select class="form-control form-control-sm "
+                                            id="tabsDropdownAttendanceRegularization"
+                                            onchange="tabClick(this)">
+                                        <option value="ALL">ALL</option>
+                                        <option value="LEAVE">LEAVE</option>
+                                        <option value="ONDUTY">
+                                            ONDUTY
+                                        </option>
+                                        <option value="COFF">COFF</option>
+                                        <option value="WFH">WFH </option>
+                                        <option value="AttendanceRegularization"> AttendanceRegularization</option>
+                                        <option value="PreviousHistory"> PreviousHistory</option>
+                                    </select>
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+                            <div class="col-6">
+                                <div class="form-group filter-combobox  hide pt-6" id="attendancecombo1">
+                                    @Html.DropDownListFor(m => m.LeavePeriod.Code, (SelectList)ViewBag.LeavePeriod, "Leave Period", new { @class = "form-control form-control-sm", @onchange = "validate(this,'Lperiod');$('.leavePeriodCombo').val($('#LeavePeriod_Code').val());onDropdownChange()" })
+
+                                </div>
+                            </div>
+                            <div class="col-6">
+
+                                <div class="form-group filter-combobox  hide" id="attendancecombo">
+                                    @Html.DropDownListFor(m => m.LeaveType.Code, (SelectList)ViewBag.LeaveType, "Leave Type", new { @class = "form-control form-control-sm", @onchange = "validate(this,'Ltype');$('.leaveTypeCombo').val($('#LeaveType_Code').val());onDropdownChange()" })
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+
+                    <div class="row tab-style-button">
+                        <div class="tab-button-wrap">
+
+                            <div class="tab-items ">
+                                <span class="btn-title all active" onclick="TabClick('all','All')">
+                                    All
+                                    <span class="btn-notification AllTabCount">@Model.AllCount</span>
+                                </span>
+                            </div>
+                            <div class="tab-items high">
+                                <span class="btn-title  tab1 " onclick="TabClick('tab1','LEAVE')">
+                                    Leave
+                                    <span class="btn-notification LeaveCount">@Model.LeaveCount</span>
+                                </span>
+                            </div>
+                            <div class="tab-items medium">
+                                <span class="btn-title tab2" onclick="TabClick('tab2','ONDUTY')">
+                                    On Duty
+                                    <span class="btn-notification OnDuty">@Model.OnDutyCount</span>
+                                </span>
+                            </div>
+                            <div class="tab-items high">
+                                <span class="btn-title tab3" onclick="TabClick('tab3','COFF')">
+                                    Compensatory Off
+                                    <span class="btn-notification CoffCount">@Model.COFFCount</span>
+                                </span>
+                            </div>
+
+                            <div class="tab-items low">
+                                <span class="btn-title tab4" onclick="TabClick('tab4','WFH')">
+                                    Work From Home
+                                    <span class="btn-notification WFHcount">@Model.WFHCount</span>
+                                </span>
+                            </div>
+                            <div class="tab-items medium">
+                                <span class="btn-title tab5" onclick="TabClick('tab5','AttendanceRegularization')">
+                                    Attendance Regularization
+                                    <span class="btn-notification Regularizationcount">@Model.AttendanceRegularizationCount</span>
+                                </span>
+                            </div>
+                            <div class="tab-items high">
+                                <span class="btn-title tab6" onclick="TabClick('tab6','PreviousHistory')">
+                                    Previous History
+                                    <span class="btn-notification PreviousHistory">@Model.PreviousHistoryCount</span>
+                                </span>
+
+                            </div>
+
+
+                            <div class="tab-items select-option">
+
+                                <div class="form-group filter-combobox  hide" id="combo1" style="width: 120px; margin-right: 10px;">
+                                    @Html.DropDownListFor(m => m.LeavePeriod.Code, (SelectList)ViewBag.LeavePeriod, "Leave Period", new { @class = "form-control form-control-sm leavePeriodCombo", @onchange = "validate(this,'Lperiod');$('#LeavePeriod_Code').val($('.leavePeriodCombo').val());onDropdownChange()" })
+                                    <span id="Lperiod"></span>
+                                </div>
+
+
+                                <div class="form-group filter-combobox  hide" id="combo2" style="width: 120px;">
+                                    @Html.DropDownListFor(m => m.LeaveType.Code, (SelectList)ViewBag.LeaveType, "Leave Type", new { @class = "form-control form-control-sm leaveTypeCombo", @onchange = "validate(this,'Ltype');$('#LeaveType_Code').val($('.leaveTypeCombo').val());onDropdownChange()" })
+                                    <span id="Ltype"></span>
+
+                                </div>
+
+
+                                <button data-toggle="tooltip" title="" class="btn btn-excel float-left" data-original-title="Export to Excel" onclick="ExportToExcel()">
+                                    <i class="icon-xl far fa-file-excel"  onclick="ExportToExcel()"></i>
+                                </button>
+                                <div class="sraech-slider" onclick="CursorFocusOnSearch()">
+                                    <div class="search-slider-inner">
+                                        <i class="fa fa-search"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+                    <div id="attendanceRegularizationList">
+                        @await Html.PartialAsync("_AttendanceRegularizationList", Model)
+                    </div>
+                    <div id="AttendanceRegularizationSlider">
+
+                    </div>
+                    <div id="AttendanceRegularizationTracker">
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>

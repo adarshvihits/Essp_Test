@@ -1,0 +1,50 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.MyProfile.MyProfile
+    <!-- Skill Info Tab -->
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "skillSubmit" }))
+{
+<div class="row">
+    @{
+        Model.TabIndex = "Skills";
+    }
+    @Html.HiddenFor(m => m.TabIndex)
+    @*@Html.HiddenFor(m => m.EmployeeGI)*@
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Skill</label>
+            @Html.DropDownListFor(m => m.Skills.Skill.Code, (SelectList)ViewBag.Ski, "--Select Skill--", new { @class = "form-control form-control-sm", @onchange = "onSkillChange(this,'skill')" })
+            <span id="skill"></span>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Skill Type</label>
+            @Html.DropDownListFor(m => m.Skills.SkillType.Code, (SelectList)ViewBag.Sty, "--Select Skill Type--", new { @class = "form-control form-control-sm", @onchange = "validate(this,'skilltype')" })
+            <span id="skilltype"></span>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Skill Proficiency</label>
+            @Html.DropDownListFor(m => m.Skills.SkillProficiency.Code, (SelectList)ViewBag.Skp, "--Select Skill Proficiency--", new { @class = "form-control form-control-sm", @onchange = "validate(this,'skillproficiency')" })
+            <span id="skillproficiency"></span>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" onclick="validateAllSkillSave()"
+                class="btn btn-default float-right">
+            Save
+        </button>
+    </div>
+</div>
+ <!-- Skills Info Tab -->
+ }

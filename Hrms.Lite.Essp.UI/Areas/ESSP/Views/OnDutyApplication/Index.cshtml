@@ -1,0 +1,407 @@
+﻿@model Hrms.Lite.Essp.Shared.Essp.Leave.OnDutyApplication
+<script src="~/scripts/ESSP/ondutyapplication.js"></script>
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>*@
+<script src="~/js/DataTables-1.11.3/js/jquery.dataTables.min.js" defer></script>
+<script src="~/scripts/commonValidators.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Save", "OnDutyApplication", FormMethod.Post, new { @class = "display-flex", enctype = "multipart/form-data", @onsubmit = "return validateOnDutyApply()"@*,@onsbmit="return validateConfirm()"*@ }))
+{
+    <!--begin::Header-->
+    <div id="kt_header" class="header header-fixed">
+        <!--begin::Container-->
+        <div class="container-fluid d-flex align-items-stretch justify-content-between">
+            <!--begin::Header Menu Wrapper-->
+
+
+            <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+                <!--begin::Header Menu-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <h3 class="main-title">On Duty Application</h3>
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item ">
+                            <a href="dashboard.html"><i class="icon-nm fas fa-home"></i></a>
+                        </li>
+
+                        <li class="breadcrumb-item text-muted">
+                            On Duty Application
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="topbar">
+
+                <!--begin::User-->
+                <div class="topbar-item">
+                    <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"
+                         id="kt_quick_user_toggle">
+                        <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
+                        <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">Sean</span>
+
+                    </div>
+                </div>
+                <!--end::User-->
+            </div>
+            <!--end::Topbar-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Header-->
+    <!--begin::Content-->
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <!--begin::Entry-->
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container full-width">
+                <!--begin::Dashboard-->
+                <!--begin::Row-->
+
+
+                <div id="DayWiseLeaveList" class="row height-100per">
+                    <div class="card card-custom  footer-row-fixed no-footer col-md-9">
+
+
+
+                        <div class="card-body row">
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="tab-items select-option">
+                                            <div class="view-details">
+
+                                                <strong>
+                                                    <label> Date of Application :   </label>
+                                                    @ViewBag.Date
+                                                    
+                                                </strong>
+                                                <div class="hide">
+                                                    @Html.EditorFor(m => m.DateOfApplication, new { htmlAttributes = new { @class = "form-control", @Value = DateTime.Now.Date.ToString("yyyy-MM-dd") } })
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <p class="text-muted text-right"> @ViewBag.CurrentUser</p>
+                                    </div>
+                                </div>
+
+
+                                <!-- leave application form-->
+
+
+                                <div class="row">
+
+
+                                    <div class="col-md-3 form-group">
+                                        <label>From</label><span class="Mandatory">*</span>
+                                                           <div class="input-group date">
+                                                               @Html.TextBoxFor(m => m.From, "{0:dd/MMM/yyyy}", new { @class = "form-control kt_datepicker_2", @readonly = "readonly", @placeholder = "From Date", onchange = "setToDate()" })
+                                                               <div class="input-group-append">
+                                                                   <span class="input-group-text">
+                                                                       <i class="la la-calendar"></i>
+                                                                   </span>
+                                                               </div>
+                                                           </div>
+                                        <span id="fromDate"></span>
+                                    </div>
+
+
+
+                                    <div class="col-md-3 form-group">
+                                        <label>Session</label><span class="Mandatory">*</span>
+                   @Html.DropDownListFor(m => m.FromType.Code, (SelectList)ViewBag.Session, new { @class = "form-control form-control-sm", @onchange = "validate(this,'sessionFrom')" })
+                                    <span id="SessionFrom"></span>
+                                    </div>
+
+
+
+                                    <div id="todate" class="col-md-3 form-group">
+                                        <label>To</label><span class="Mandatory">*</span>
+                                                         <div class="input-group date">
+
+                                                             @Html.TextBoxFor(m => m.To, "{0:dd/MMM/yyyy}", new { @class = "form-control kt_datepicker_2 todate", @readonly = "readonly", @placeholder = "To Date", @onchange = "showsessionto()" })
+
+                                                             <div class="input-group-append">
+                                                                 <span class="input-group-text">
+                                                                     <i class="la la-calendar"></i>
+                                                                 </span>
+                                                             </div>
+                                                         </div>
+                                        <span id="toDate"></span>
+                                    </div>
+
+
+
+
+                                    <div id="sessiontoshow" class="col-md-3 form-group">
+                                        <label>Session</label><span class="Mandatory">*</span>
+
+                                        @*@Html.DropDownListFor(m => m.ToType.Code, (SelectList)ViewBag.Session, new { @class = "form-control form-control-sm", @onchange = "validate(this,'sessionTo')" })*@
+                                        @Html.DropDownListFor(m => m.ToType.Code, (SelectList)ViewBag.SessionTo, new { @class = "form-control form-control-sm", @onchange = "validate(this,'sessionTo')" })
+
+                                        <span id="SessionTo"></span>
+                                    </div>
+
+                                </div>
+                                <div class="mb-5 pt-2 align-right">
+
+                                    <div class="button-group">
+                                        <button id="employeevslopbatch" type="button" class="btn btn-default btn-sm " onclick="getLeaveDayWiseDetails()">
+                                            Proceed
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- leave application form-->
+                                @*<div id="DayWiseLeaveListTable">*@
+                                    <div class="ihits-table table-border hover-color mobile-responsive-table leave-details-table vertical-scroll-100">
+                                        <table>
+                                            <thead>
+                                                <tr class="table-light">
+                                                    <th scope="col">On Duty Dates</th>
+                                                    <th scope="col">Day</th>
+                                                    <th scope="col">Session</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.LeaveDetails != null && Model.LeaveDetails.DayWiseDetails.Count > 0)
+                                                {
+
+                                                    foreach (var item in Model.LeaveDetails.DayWiseDetails)
+                                                    {
+                                                        <tr>
+                                                            <td data-label="Leave date">@Html.Encode(String.Format("{0:dd-MMM-yyyy}", item.LeaveDate))</td>
+                                                            <td data-label="Day">@item.Day </td>
+                                                            <td data-label="Session">@item.Session.Name</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr><td colspan="5"> No Data Found</td></tr>
+                                                }
+                                             </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- leave approval view start -->
+                                @*</div>*@
+                                <div class="row pt-2">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Reason</label><span class="Mandatory">*</span>
+
+                                            @Html.DropDownListFor(m => m.LeaveReason.Code, (SelectList)ViewBag.Reason, "Select Reason", new { @class = "form-control form-control-sm", @onchange = "validate(this,'Reason')" })
+                                            <span id="Reason"></span>
+
+                                        </div>
+
+
+
+                                        <div class="form-group">
+                                            <label>Additional Remarks</label>
+                                            @*<input class="form-control form-control-sm" type="text" placeholder="Additional Remarks">*@
+                                            @Html.TextBoxFor(m => m.AdditionalRemarks, new { @class = "form-control form-control-sm", @placeholder = "Additional Remarks", maxlength = "250" })
+
+                                        </div>
+
+                                        <div class="file-upload-form-group">
+                                            <label for="formFileMultiple" class="form-label">
+                                                Attach
+                                                File
+                                            </label>
+
+                                            <div class="file-upload-form mb-1">
+                                                <div class="small-btn-group">
+                                                    <button type="button" data-toggle="tooltip" data-placement="top" data-original-title="View Image" class="btn btn-icon btn-default" onclick="Preview()"><i class="icon-xl far fa-eye"></i></button>
+
+                                                </div>
+                                                @*@Html.TextBoxFor(model => model.Attachment.FileData.FileName, null, new { type = "file", @class = "form-control PreviewImage", @onchange = "CheckExtensionAndSize(this)", tabindex = "@(++tabindex)" })*@
+                                                @Html.TextBoxFor(model => model.Attachment.FileData, null, new { type = "file", @class = "form-control PreviewImage", @onchange = "CheckExtensionAndSize(this)", tabindex = "@(++tabindex)" })
+
+                                                @*<input class="form-control" type="file" id="formFileMultiple" multiple="">*@
+                                            </div>
+                                            <label class="font-size-xs">
+                                                Only pdf, Jpeg, Jpg, Png and bmp files are
+                                                allowed , File size should be less than 1 MB.
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+
+
+                                        <div class="form-group">
+                                            <label>Work Handover Details</label>
+                                            @*<input class="form-control form-control-sm" type="text" placeholder="Work Handover Details">*@
+                                            @Html.TextBoxFor(m => m.HandOverDetails, new { @class = "form-control form-control-sm", @placeholder = "Work Handover Details", maxlength = "250" })
+
+                                        </div>
+
+
+
+
+                                        <div class="form-group">
+                                            <label>Contact details & Address</label>@*<span class="Mandatory">*</span>*@
+                                            @Html.TextBoxFor(m => m.ContactDetails, new { @class = "form-control form-control-sm", @placeholder = "Contact details & Address",@onchange = "validate(this,'contactDetails')", maxlength = "250" })
+                                            <span id="contactDetails"></span>
+
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                </div>
+
+
+
+                                <div class="row pt-6">
+
+                                    <div class="col-md-6">
+                                        @*<a href="ApplicationHistory.cshtml" type="button" class="btn btn-default  mobile-full-width" >*@
+                                        @*<button type="button" class="btn btn-default " onclick="OnApplicationHistory_Click()"> Application History</button>*@
+                                        <a href="@Url.Action("ApplicationHistory", "OnDutyApplication",new { Area = "ESSP" })" type="button" class="btn btn-default" onclick="OnApplicationHistory_Click()">
+                                Application History
+                            </a>
+
+                                    </div>
+
+
+                                    <div class="col-md-6 align-right">
+                                        @*Html.HiddenFor(m => m.LeaveDayWiseDetails)*@
+                                        @Html.HiddenFor(m => m.LeaveApplicationGI)
+                                        @Html.HiddenFor(m => m.LeaveDetails)
+                                        @Html.HiddenFor(m => m.From)
+                                        @Html.HiddenFor(m => m.To)
+                                        @Html.HiddenFor(m => m.FromType)
+                                        @Html.HiddenFor(m => m.ToType)
+
+                                        @Html.HiddenFor(m => m.DateOfApplication)
+
+
+
+
+
+
+                                        <button type="submit" class="btn btn-default ">Apply</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- leave approval view end -->
+                            <!--end: Datatable-->
+                        </div>
+                    </div>
+
+                    <!-- right leave view start -->
+                    <div class="col-md-3">
+
+                        <div class="card-body p-3 right-leave-section">
+
+                            <div class="employee-details-left">
+
+                                <div class="employee-outer-detils">
+                                    <div class="card text-white bg-info mb-3">
+                                        <div class="card-body text-center">
+
+                                            <h2 class="card-text">  @Html.DisplayFor(m => m.LeaveDetails.DayWiseDetails.Count)</h2>
+                                            <p>Days Applied </p>
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                                <br>
+                                <p><strong>Approval Authorities</strong></p>
+                                <div class="scroll">
+
+                                    @{
+                                        if (Model.LeaveDetails != null)
+                                        {
+
+                                            if (Model.LeaveDetails.EmployeeAuthority != null && Model.LeaveDetails.EmployeeAuthority.Count > 0)
+                                            {
+
+                                                foreach (var item in Model.LeaveDetails.EmployeeAuthority)
+
+                                                {
+                                                    <div class="employee-outer-detils">
+
+                                                        <div class="">
+                                                                                                <div class="image-input image-input-outline image-input-circle  float-left mr-5" id="kt_image_4" style="background-image: url(@item.AbsoluteUri)">
+
+                                                                                                    <div class="image-input-wrapper">
+                                                                                                        <span class="badge-1">@item.Level</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                            <div class="flex-grow-1">
+                                                                <!--begin::Title-->
+                                                                <div class="justify-content-between flex-wrap mt-2">
+                                                                    <div class="mr-3 header-profile-name">
+                                                                        <a class="header-profile-name">@item.AuthorityName</a>
+
+                                                                        <p>@item.PhoneNumber, @item.Email</p>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <!--end::Title-->
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+                    <!-- right leave view start -->
+
+                    @*<div id="alllist">
+                        @await Html.PartialAsync("_ALLList")
+                    </div>*@
+
+                </div>
+
+                <!--end::Row-->
+                <!--begin::Row-->
+                <!--end::Row-->
+                <!--end::Dashboard-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Entry-->
+
+    </div>
+    <!--end::Content-->
+}

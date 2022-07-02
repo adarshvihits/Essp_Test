@@ -1,0 +1,98 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.MyProfile.MyProfile
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "certification" }))
+{
+    <div class="row">
+        @{
+            Model.TabIndex = "Certifications";
+        }
+        @Html.HiddenFor(m => m.TabIndex)
+        @*@Html.HiddenFor(m => m.EmployeeGI)*@
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Certificate</label>
+                @*<input type="text" class="form-control form-control-sm" placeholder="Certificate">*@
+                @Html.TextBoxFor(m => m.Certifications.Certificate, new { @class = "form-control form-control-sm", @placeholder = "Certificate", @maxlength = 120, @onblur = "firstLetterCaps(this,'certificate')" })
+                <span id="certificate"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Field of Certification</label>
+                @Html.DropDownListFor(m => m.Certifications.CertificateType.Code, (SelectList)ViewBag.Cty, "--Select Field of Certification--", new { @class = "form-control form-control-sm", @onchange = "validate(this,'certificatetype')" })
+                <span id="certificatetype"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Issued by</label>
+                @Html.TextBoxFor(m => m.Certifications.IssuedBy, new { @class = "form-control form-control-sm", @placeholder = "Issued By", @maxlength = 120, @onblur = "firstLetterCaps(this,'issuedby')" })
+                <span id="issuedby"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label>Issued Date</label>
+            <div class="input-group date">
+                @*<input type="text" class="form-control kt_datepicker_2"
+                    readonly="readonly"
+                    placeholder="Select date" />*@
+                @Html.TextBoxFor(m => m.Certifications.Issued, "{0:dd-MMM-yyyy}", new { @class = "form-control kt_datepicker_8", placeholder = "Issued Date", @onchange = "validate(this,'issueddate')" })
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="la la-calendar-check-o"></i>
+                    </span>
+                </div>
+                <span id="issueddate"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Mode</label>
+                @Html.DropDownListFor(m => m.Certifications.CertificateMode.Code, (SelectList)ViewBag.Cmo, "--Select Mode--", new { @class = "form-control form-control-sm", @onchange = "validate(this,'certificatemode')" })
+                <span id="certificatemode"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Validity</label>
+                @Html.DropDownListFor(m => m.Certifications.CertificateValidity.Code, (SelectList)ViewBag.Cva, "--Select Validity--", new { @class = "form-control form-control-sm", @onchange = "onLifetimeChange(this,'validity')" })
+                <span id="validity"></span>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="col-md-3">
+            <label>Renewal Date</label>
+            <div class="input-group date">
+                @*<input type="text" class="form-control kt_datepicker_2"
+                    readonly="readonly"
+                    placeholder="Select date" />*@
+                @Html.TextBoxFor(m => m.Certifications.Renewaldate, "{0:dd-MMM-yyyy}", new { @class = "form-control kt_datepicker_2", @placeholder = "Renewal Date", @onchange = "validateRenewalDate(this,'renewabledate')", @readonly = true })
+                @*@Html.TextBoxFor(m => m.Certifications.RenewableDate, "{0:dd/MMM/yyyy}", new { @class = "form-control kt_datepicker_2", @readonly = "true", @placeholder = "DOJ" })*@
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="la la-calendar-check-o"></i>
+                    </span>
+                </div>
+            </div>
+            <span id="renewabledate"></span>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" onclick="validateAllCertificate()"
+                    class="btn btn-default float-right">
+                Save
+            </button>
+        </div>
+    </div>
+}

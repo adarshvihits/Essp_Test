@@ -1,0 +1,90 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.MyProfile.MyProfile
+<div class="row">
+    <div class="col-md-12">
+        <div class="ihits-table table-border mobile-responsive-table personal-details-family-section mb-2">
+            <table id="family">
+                <thead>
+                    <tr class="table-dark">
+                        <th scope="col">Name</th>
+                        <th scope="col">Relation</th>
+                        <th scope="col">Date of Birth</th>
+                        <th scope="col">Occupation</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.FamilyDetails.Count; i++)
+                    {
+                        @if (Model.FamilyDetails[i].FamilyLogGI != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                        {
+                            <tr id="row_OI_@i">
+                                <td data-label="Name">
+                                    @Html.HiddenFor(m => m.FamilyDetails[i].FamilyLogGI)
+                                    @Html.DisplayFor(m => m.FamilyDetails[i].Name)
+                                </td>
+                                <td data-label="Relation">
+                                    @*<input class="form-control" type="text"
+                                        placeholder="Father">*@
+                                    @Html.DisplayFor(m => m.FamilyDetails[i].RelationName)
+                                </td>
+                                <td data-label="Date of Birth">
+                                    <div class="input-group date">
+                                        @*<input type="text" class="form-control kt_datepicker_2"
+                                            readonly="readonly"
+                                            placeholder="Select date" />*@
+                                        @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.FamilyDetails[i].DateOfBirth))
+                                    </div>
+                                </td>
+                                <td data-label="Occupation">
+                                    @*<input class="form-control" type="text"
+                                        placeholder="Retired">*@
+                                    @Html.DisplayFor(m => m.FamilyDetails[i].Occupation)
+                                </td>
+                                <td data-label="Status">
+                                    @*<input class="form-control" type="text"
+                                        placeholder="Alive">*@
+                                    @Html.DisplayFor(m => m.FamilyDetails[i].StatusName)
+                                </td>
+                                <td data-label="Edit">
+                                    <div class="small-btn-group">
+                                        <button id="addFamilyDetails" type="button"
+                                                class="btn btn-icon btn-default slider-btn icon-only" data-toggle="tooltip" data-placement="top" title="Edit" onclick="onFamilySave('@Model.FamilyDetails[i].FamilyLogGI')">
+                                            <i class="icon-xl fas fa-pencil-alt"></i>
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-icon btn-delete icon-only" data-toggle="tooltip" data-placement="top" title="Delete" onclick="onFamilyDelete('@Model.FamilyDetails[i].FamilyLogGI')">
+                                            <i class="icon-xl far fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>No table data</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 ">
+        <button id="addFamilyDetails" type="button" class="btn btn-default float-right slider-btn" onclick="onFamilySave()">
+            <i class="icon-nm fas fa-plus"></i>Add
+            New
+        </button>
+        <div id="familySav">
+
+
+        </div>
+    </div>
+</div>
+
+

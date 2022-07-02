@@ -1,0 +1,106 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.MyProfile.MyProfile
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+        debugger;
+        //fillPunchingMethodDropdown();
+    $('#PersonalInfo_Hobbies').multiselect({
+            includeSelectAllOption: true,
+            nonSelectedText: '--Select Hobbies--',
+        });
+
+    $('#PersonalInfo_Language').multiselect({
+            includeSelectAllOption: true,
+            nonSelectedText: '--Select Languages--',
+        });
+
+ });
+</script>
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "Personalinfo" }))
+{
+    <div class="row">
+        @{
+            Model.TabIndex = "Personalinfo";
+        }
+        @Html.HiddenFor(m => m.TabIndex)
+        @*@Html.HiddenFor(m => m.EmployeeGI)*@
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Blood Group</label>
+                @Html.DropDownListFor(m => m.PersonalInfo.BloodGroup.Code, (SelectList)ViewBag.Blo, "--Select Blood Group--", new { @class = "form-control form-control-sm", @onchange = "onCountryChangepd(this,'bloodgroup')" })
+                <span id="bloodgroup"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Marital Status</label>
+                @Html.DropDownListFor(m => m.PersonalInfo.MaritalStatus.Code, (SelectList)ViewBag.Mar, "--Select Marital Status--", new { @class = "form-control form-control-sm", @onchange = "DOWStatus(this,'maritalstatus')" })
+                <span id="maritalstatus"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>DOW</label>
+                <div class="input-group date">
+                    @*<input type="text" class="form-control kt_datepicker_2"
+                        readonly="readonly"
+                        placeholder="Select date" />*@
+                    @Html.TextBoxFor(m => m.PersonalInfo.wedding, "{0:dd-MMM-yyyy}", new { @class = "form-control kt_datepicker_8", placeholder = "DOW", @onchange = "validateDOW(this,'dow')", @readonly = true })
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            <i class="la la-calendar"></i>
+                        </span>
+                    </div>
+                    <span id="dow"></span>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Religious View</label>
+                @Html.DropDownListFor(m => m.PersonalInfo.ReligiousView.Code, (SelectList)ViewBag.Rel, "--Select Religious View--", new { @class = "form-control form-control-sm", @onchange = "onCountryChangepd(this,'religiousview')" })
+                <span id="religiousview"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Hobbies</label>
+                @Html.ListBoxFor(m => m.PersonalInfo.Hobbies, (SelectList)ViewBag.Hob, new { @class = "form-control-multiselect form-control-sm JType", @multiple = "multiple" })
+                <span id="punchingmethod"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Languages</label>
+
+                @Html.ListBoxFor(m => m.PersonalInfo.Language, (SelectList)ViewBag.Lan, new { @class = "form-control-multiselect form-control-sm JType", @multiple = "multiple" })
+
+                <span id="punchingmethod"></span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <button type="button" onclick="validateAllPersonalInfo()"
+                    class="btn btn-default float-right">
+                Save
+            </button>
+        </div>
+    </div>
+}

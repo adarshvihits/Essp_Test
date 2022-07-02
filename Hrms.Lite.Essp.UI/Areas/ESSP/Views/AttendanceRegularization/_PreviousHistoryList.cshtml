@@ -1,0 +1,85 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.Regularization.AttendanceRegularization
+
+
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('.AllTabCount').html("@Model.AllCount");
+        $('.LeaveCount').html("@Model.LeaveCount");
+        $('.OnDuty').html("@Model.OnDutyCount");
+        $('.CoffCount').html("@Model.COFFCount");
+        $('.WFHcount').html("@Model.WFHCount");
+        $('.Regularizationcount').html("@Model.AttendanceRegularizationCount");
+        $('.PreviousHistory').html("@Model.PreviousHistoryCount");
+
+
+        $('#PreviousHistoryList').DataTable({
+            "pageLength": 25,
+            "language": {
+                searchPlaceholder: "Search"
+            }
+        });
+
+
+        $('.ihits-table table').removeClass("dataTable no-footer");
+        $(".ihits-table table tr th").removeAttr('style');
+
+    });
+
+
+</script>
+<div class="ihits-table table-border odd-even mobile-responsive-table Previous-History table-scroll">
+    <table id="PreviousHistoryList">
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">ID</th>
+                <th scope="col">Employee Name</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">No.of Days</th>
+                <th scope="col">Type</th>
+                <th scope="col">Date of Application</th>
+                <th scope="col">Status</th>
+                <th scope="col">Tracker</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.AttendanceRegularizationList != null && Model.AttendanceRegularizationList.Count > 0)
+            {
+
+                for (int i = 0; i < Model.AttendanceRegularizationList.Count; i++)
+                {
+                    <tr>
+                        @Html.HiddenFor(m => Model.AttendanceRegularizationList[i].LeaveApplicationGI)
+
+                        <td data-label="ID">@Model.AttendanceRegularizationList[i].ID</td>
+                        <td data-label="Employee Name">@Model.AttendanceRegularizationList[i].EmployeeName</td>
+                        <td data-label="Code">@Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AttendanceRegularizationList[i].From))</td>
+
+                        <td data-label="To">@Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AttendanceRegularizationList[i].To))</td>
+                        <td data-label="No.of Days">@Model.AttendanceRegularizationList[i].NoOfDays</td>
+                        <td data-label="Type">@Model.AttendanceRegularizationList[i].Type</td>
+                        <td data-label="Date of Application">@Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AttendanceRegularizationList[i].AppliedOn))</td>
+                        <td data-label="Status">@Model.AttendanceRegularizationList[i].Status</td>
+                        <td data-label="Tracker">
+                            <a id="trainingEmployeeDetails " class="slider-btn" onclick="onEmployeeTrackerClick('@Model.AttendanceRegularizationList[i].LeaveApplicationGI', '@Model.AttendanceRegularizationList[i].LeaveType', 'TRACKER')">
+                                <i class="icon-xl la la-arrow-circle-right"></i>
+                            </a>
+
+
+                        </td>
+                    </tr>
+
+                }
+            }
+            else
+            {
+                <tr>
+
+                    <td colspan="3" align="center">  No  Data Found</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,52 @@
+﻿@model Hrms.Lite.Essp.Shared.Essp.Leave.CoffApplication
+    <script>
+    $(document).on('click', 'input[type="checkbox"]', function () {
+        $('input[type="checkbox"]').not(this).prop('checked', false);
+    });
+    </script>
+<div class="ihits-table table-border hover-color mobile-responsive-table c-off-table vertical-scroll-100 mb-6">
+    <table>
+        <thead>
+            <tr class="table-light">
+                <th scope="col">Entitle Date </th>
+
+                <th scope="col">Expire On</th>
+                <th scope="col">Credited For</th>
+                <th scope="col">Select</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.LeaveDetails.DayWiseDetails != null && Model.LeaveDetails.DayWiseDetails.Count > 0)
+            {
+
+                for (int i = 0; i < Model.LeaveDetails.DayWiseDetails.Count; i++)
+                {
+                    <tr>
+                        <td data-label="Entitle Date">
+                            @Html.HiddenFor(m => Model.LeaveDetails.DayWiseDetails[i].EntitleDate)
+                            @Html.HiddenFor(m => Model.LeaveDetails.DayWiseDetails[i].ExpiresOn)
+                            @Html.HiddenFor(m => Model.LeaveDetails.DayWiseDetails[i].CreditedFor)
+                            @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.LeaveDetails.DayWiseDetails[i].EntitleDate))
+                        </td>
+
+                        <td data-label="Expire On">@Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.LeaveDetails.DayWiseDetails[i].ExpiresOn))</td>
+                        <td data-label="Credited For">@Model.LeaveDetails.DayWiseDetails[i].CreditedFor</td>
+                        <td data-label="Select">
+                            <div class="checkbox-inline">
+                                <label class="checkbox checkbox-outline checkbox-outline-1x checkbox-primary text-muted">
+                                    @Html.CheckBoxFor(m => m.LeaveDetails.DayWiseDetails[i].CheckStatus)
+                                    <span></span>
+                                </label>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            }
+          
+
+
+        </tbody>
+    </table>
+</div>

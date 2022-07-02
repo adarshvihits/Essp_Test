@@ -1,0 +1,189 @@
+﻿@model Hrms.Lite.Essp.Shared.Essp.Leave.OnDutyApplication
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/plugins.bundle.js"></script>
+    <script src="js/prismjs.bundle.js"></script>
+    <script src="js/scripts.bundle.js"></script>
+    <!--end::Global Theme Bundle-->
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="js/fullcalendar.bundle.js"></script>
+    <!-- <script src="//maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM"></script> -->
+    <script src="js/gmaps.js"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="js/widgets.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/muldiselect.js"></script>
+    <script src="js/custom.js"></script>
+    <script>
+        $(document).ready(function () {
+            debugger;
+
+
+        });
+    </script>
+    <div id="trainingEmployeeDetails" class="slider-forms slider-forms-open TrackerSlider">
+        <div class="slider-inner-style">
+            <div class="slider-form-close" onclick="CloseSlider('TrackerSlider')"><i class="ki ki-close icon-xs text-muted"></i></div>
+            <h4 class="mb-4">Application Tracker</h4>
+            <div class="profile-header position-relative pb-12 mb-5" style="padding-bottom: 2px !important; padding-top: 5px !important;">
+                <div class="row">
+                  @await Html.PartialAsync("~/Areas/ESSP/Views/Shared/_EmployeeSliderHeader.cshtml", Model.EmployeeHeader)
+                </div>
+                <div class="profile-header-overflow"></div>
+            </div>
+
+
+
+
+            <!----- stepper start here --->
+            <div>
+                @if (Model.Tracker != null && Model.Tracker.Count > 0)
+            {
+
+                foreach (var item in Model.Tracker)
+                {
+                    <!-- completed -->
+                <div class="step">
+                    <div class="v-stepper">
+                        <div class="circle"><i class="fa fa-check"></i></div>
+                        <div class="line"></div>
+                    </div>
+
+                    <div class="stepper-content">
+                        <div class="row-outer">
+                            <label class="view-title">@item.Stage</label>
+                            <div class="view-details">
+                                @item.ApprovalStatus,@item.Approver,@item.Status
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+ <!-- active -->
+
+
+ <!-- empty -->
+
+
+ <!-- regular -->
+
+                }
+            }
+            </div>
+
+            <!----- stepper end here --->
+            <!--table start here-->
+            <div class="ihits-table table-border mobile-responsive-table mb-5">
+                <table>
+                    <thead>
+                        <tr class="table-light">
+                            <th style="width: 25%;" scope="col">Type</th>
+
+                            <th scope="col">No of days</th>
+                            <th scope="col">From</th>
+                            <th scope="col">To</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Tracker != null && Model.Tracker.Count > 0)
+                    {
+
+                        foreach (var item in Model.Tracker)
+                        {
+                        <tr>
+                            <td data-label="ID">@Model.LeaveType.Name</td>
+
+                            <td data-label="No of days">
+                                @Model.TotalDays
+                            </td>
+
+                            <td data-label="From">
+                                @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.From))
+                            </td>
+
+                            <td data-label="To">
+                                @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.To))
+                            </td>
+
+                        </tr>
+                        }
+                    }
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!--table start end-->
+
+
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row-outer">
+                        <label class="view-title">Reason</label>
+                        <div class="view-details">
+                            @Model.LeaveReason.Name
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row-outer">
+                        <label class="view-title">Additional Remarks</label>
+                        <div class="view-details">
+                            @Model.AdditionalRemarks
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row-outer">
+                        <label class="view-title">Work Handover:</label>
+                        <div class="view-details">
+                            @Model.HandOverDetails
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row-outer">
+                        <label class="view-title">Contact Details & Address</label>
+                        <div class="view-details">
+                            @Model.ContactDetails
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="row card-footer-bottom-fixed">
+
+                <div class="view-details align-right col-md-12">
+                    <a data-toggle="tooltip" data-original-title="View File" type="button" onclick="viewFileFromDT('@Model.Attachment.AbsoluteUri')" class="btn btn-small btn-secondary mobile-full-width">
+                        @Html.HiddenFor(model => Model.Attachment.AbsoluteUri)
+                        <i class="icon-xl far fa-eye"></i>View File
+                    </a>
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+
+
+    </div>

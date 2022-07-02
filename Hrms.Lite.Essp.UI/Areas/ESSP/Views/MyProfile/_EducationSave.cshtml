@@ -1,0 +1,63 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.MyProfile.MyProfile
+@{
+Model.TabIndex = "Education";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "eduk" }))
+{
+    @Html.HiddenFor(m => m.TabIndex)
+    @*@Html.HiddenFor(m => m.EmployeeGI)*@
+    <div id="addEducationDetails" class="slider-forms slider-forms-open edu">
+        <div class="slider-inner-style">
+            <div class="slider-form-close" onclick="CloseSlider('edu')"><i class="ki ki-close icon-xs text-muted"></i></div>
+            <h3>Education</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Qualification Type</label>
+                        @Html.HiddenFor(m => m.GetEducation.EducationLogGI, new { @class = "form-control form-control-sm", @placeholder = "loggi" })
+                        @Html.HiddenFor(m => m.SliderName)
+                        @Html.DropDownListFor(m => m.GetEducation.QualificationType.Code, (SelectList)ViewBag.Qty, "--Select Qualification Type--", new { @class = "form-control form-control-sm", @onchange = "onQualificationTypeChange(this,'qualificationtype')" })
+                        <span id="qualificationtype" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Qualification</label>
+                        @Html.DropDownListFor(m => m.GetEducation.Qualification.Code, (SelectList)ViewBag.Qua, "--Select Qualification--", new { @class = "form-control form-control-sm", @onchange = "onQualificationChange(this,'qualification')" })
+                        <span id="qualification" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Specialization of Branch</label>
+                        @Html.DropDownListFor(m => m.GetEducation.Specialisation.Code, (SelectList)ViewBag.Spc, "--Select Specialization of Branch--", new { @class = "form-control form-control-sm", @onchange = "validate(this,'specialisation')" })
+                        <span id="specialisation" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Year of Completion</label>
+                        @Html.DropDownListFor(m => m.GetEducation.YearOfCompletion.Code, (SelectList)ViewBag.Yoc, "--Select Year Of Completion--", new { @class = "form-control form-control-sm", @onchange = "validate(this,'yoc')" })
+                        <span id="yoc"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row card-footer-bottom-fixed border-none">
+
+                <div class="col-md-12 float-right-btn">
+                    <button id="eduID" type="button" class="btn btn-default" onclick="validateAllEducationSave()">@Model.SliderName</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

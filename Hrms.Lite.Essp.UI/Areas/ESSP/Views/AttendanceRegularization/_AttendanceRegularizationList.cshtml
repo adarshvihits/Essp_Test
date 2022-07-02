@@ -1,0 +1,92 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.Regularization.AttendanceRegularization
+    <script src="~/js/tooltip.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        debugger;
+        $('.AllTabCount').html("@Model.AllCount");
+        $('.LeaveCount').html("@Model.LeaveCount");
+        $('.OnDuty').html("@Model.OnDutyCount");
+        $('.CoffCount').html("@Model.COFFCount");
+        $('.WFHcount').html("@Model.WFHCount");
+        $('.Regularizationcount').html("@Model.AttendanceRegularizationCount");
+        $('.PreviousHistory').html("@Model.PreviousHistoryCount");
+
+
+        $('#AttendanceregularizationTable').DataTable({
+            "pageLength": 25,
+            "language": {
+                searchPlaceholder: "Search"
+            }
+        });
+
+
+        $('.ihits-table table').removeClass("dataTable no-footer");
+        $(".ihits-table table tr th").removeAttr('style');
+
+    });
+
+
+    </script>
+<div class="ihits-table table-border odd-even mobile-responsive-table attendance-regularization-approvals table-scroll">
+    
+    <table id="AttendanceregularizationTable">
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">ID</th>
+                <th scope="col">Employee Name</th>
+                <th scope="col">Applied On</th>
+                <th scope="col">Type</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">No of Days</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Aging</th>
+
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.AttendanceRegularizationList != null && Model.AttendanceRegularizationList.Count > 0)
+            {
+
+                for (int i = 0; i < Model.AttendanceRegularizationList.Count; i++)
+                {
+
+            <tr>
+            @Html.HiddenFor(m=>Model.AttendanceRegularizationList[i].LeaveApplicationGI)
+                <td data-label="ID">@Model.AttendanceRegularizationList[i].ID</td>
+                <td data-label="Employee Name">@Model.AttendanceRegularizationList[i].EmployeeName</td>
+                <td data-label="Applied On"> @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AttendanceRegularizationList[i].AppliedOn))</td>
+
+
+                <td data-label="Type">@Model.AttendanceRegularizationList[i].Type</td>
+                <td data-label="From">@Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AttendanceRegularizationList[i].From))</td>
+                <td data-label="To">@Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AttendanceRegularizationList[i].To))</td>
+                <td data-label="No of Days">@Model.AttendanceRegularizationList[i].NoOfDays</td>
+                <td data-label="Reason">@Model.AttendanceRegularizationList[i].Reason</td>
+                <td data-label="Aging">@Model.AttendanceRegularizationList[i].Aging</td>
+                <td data-label="Action">
+                    <div>
+                        <a href="#" id="trainingEmployeeDetails" data-toggle="tooltip" title="View" data-original-title="View" class="view_btn slider-btn" onclick="onEmployeeTrackerClick('@Model.AttendanceRegularizationList[i].LeaveApplicationGI', '@Model.AttendanceRegularizationList[i].LeaveType', 'APPROVAL', '@Model.AttendanceRegularizationList[i].AttendanceStatusTypeCode')"> </a>
+                        <a href="#" data-toggle="tooltip" title="" id="banknameapprove" type="button" class="btn_approve" data-original-title="Approve" onclick="confirmApproveIconClick('@Model.AttendanceRegularizationList[i].LeaveApplicationGI', '@Model.AttendanceRegularizationList[i].AttendanceStatusTypeCode', '@Model.AttendanceRegularizationList[i].LeaveType')"></a>
+                        <a href="#" data-toggle="tooltip" title="" data-original-title="Reject" class="btn_reject" onclick="confirmRejectIconClick('@Model.AttendanceRegularizationList[i].LeaveApplicationGI', '@Model.AttendanceRegularizationList[i].AttendanceStatusTypeCode', '@Model.AttendanceRegularizationList[i].LeaveType')"> </a>
+
+                    </div>
+
+                </td>
+            </tr>
+
+                }
+            }
+            else
+            {
+                <tr>
+
+                    <td colspan="3" align="center">  No  Data Found</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

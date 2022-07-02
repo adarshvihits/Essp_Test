@@ -1,0 +1,85 @@
+﻿@model Hrms.Lite.Essp.Shared.ESSP.Regularization.AbsenteeismRegularization
+<script>
+    $(document).ready(function () {
+        debugger;
+        $('#fromVal span').text(' @Model.From.ToShortDateString()');
+        $('#toVal span').text(' @Model.To.ToShortDateString()');
+        $('.AllTabCount').text(' @Model.DaysCount');
+        $('.PendingCount').text(' @Model.PendingCount');
+    });
+</script>
+<div class="ihits-table table-border hover-color odd-even mobile-responsive-table absenteeism-table vertical-scroll-300">
+    <table>
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">Date</th>
+                <th scope="col">Assigned Shift</th>
+                <th scope="col">Worked Shift </th>
+                <th scope="col">IN </th>
+                <th scope="col">Out</th>
+                <th scope="col">Total Time</th>
+                <th scope="col">Status</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Status</th>
+                <th scope="col">Track</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.AbsenteeismRegularizationList != null && Model.AbsenteeismRegularizationList.Count > 0)
+            {
+
+                for (int i = 0; i < Model.AbsenteeismRegularizationList.Count; i++)
+                {
+            <tr>
+                
+                <td data-label="Date">
+                    @Html.HiddenFor(model => Model.AbsenteeismRegularizationList[i].LeaveApplicationGI)
+                    @Html.HiddenFor(model => Model.AbsenteeismRegularizationList[i].LeaveType)
+                    @Html.Encode(String.Format("{0:dd-MMM-yyyy}", Model.AbsenteeismRegularizationList[i].Date))
+                </td>
+                <td data-label="Assigned Shift">
+                    @Model.AbsenteeismRegularizationList[i].AssignedShift
+                </td>
+                <td data-label="Worked Shift">@Model.AbsenteeismRegularizationList[i].WorkedShift</td>
+                <td data-label="In">@Model.AbsenteeismRegularizationList[i].IN</td>
+                <td data-label="Out">@Model.AbsenteeismRegularizationList[i].Out</td>
+                <td data-label="Total Time">@Model.AbsenteeismRegularizationList[i].TotalTime</td>
+                <td data-label="Status">@Model.AbsenteeismRegularizationList[i].AttendanceStatus</td>
+
+                <td data-label="Reason">@Model.AbsenteeismRegularizationList[i].Reason</td>
+                <td data-label="Regularize">
+
+                    @Model.AbsenteeismRegularizationList[i].Status
+
+                </td>
+                <td data-label="Track"><a onclick="onTrackerClick('@Model.AbsenteeismRegularizationList[i].LeaveApplicationGI', '@Model.AbsenteeismRegularizationList[i].LeaveType')"><i class="icon-xl la la-arrow-circle-right"></i></a></td>
+            </tr>
+
+
+                }
+            }
+            @*<tr>
+                <td data-label="Date">03-Apr-2022</td>
+                <td data-label="Assigned Shift">
+                    09:00 - 18:00
+                </td>
+                <td data-label="Worked Shift">09:00 - 18:00</td>
+                <td data-label="In">09:00</td>
+                <td data-label="Out">-</td>
+                <td data-label="Total Time">-</td>
+                <td data-label="Status">AB</td>
+
+                <td data-label="Reason">Out Punch Missing</td>
+                <td data-label="Regularize">
+
+                    Proceed
+
+                </td>
+                <td data-label="Track"><a href="#">   <i class="icon-xl la la-arrow-circle-right"></i></a></td>
+            </tr>*@
+
+
+
+        </tbody>
+    </table>
+</div>
